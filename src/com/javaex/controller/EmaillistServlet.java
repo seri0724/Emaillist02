@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.javaex.dao.EmaillistDao;
+import com.javaex.util.WebUtil;
 import com.javaex.vo.EmaillistVo;
 
 @WebServlet("/el") //EmaillistServlet -> el로 이름 바꿔줌
@@ -25,8 +26,9 @@ public class EmaillistServlet extends HttpServlet {
 		String actionName = request.getParameter("a");
 		if("form".equals(actionName)) {
 			System.out.println("form 진입");
-			RequestDispatcher rd = request.getRequestDispatcher("form.jsp");
-			rd.forward(request, response);			
+			/*RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/form.jsp");
+			rd.forward(request, response);*/
+			WebUtil.forword(request, response, "/WEB-INF/form.jsp");
 		} else if("insert".equals(actionName)) {
 			System.out.println("insert 진입");
 			
@@ -44,7 +46,8 @@ public class EmaillistServlet extends HttpServlet {
 			EmaillistDao dao = new EmaillistDao();
 			dao.insert(vo);
 			
-			response.sendRedirect("el?a=list");
+			/*response.sendRedirect("/emaillist2/el?a=list");*/
+			WebUtil.redirect(request, response, "/emaillist2/el?a=list");
 		} else if("list".equals(actionName)) {
 			System.out.println("list 진입");
 			
@@ -52,8 +55,9 @@ public class EmaillistServlet extends HttpServlet {
 			List<EmaillistVo> list = dao.getList();
 			
 			request.setAttribute("list", list); //부를이름, 실제데이터
-			RequestDispatcher rd = request.getRequestDispatcher("list.jsp");
-			rd.forward(request, response);
+			/*RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/list.jsp");
+			rd.forward(request, response);*/
+			WebUtil.forword(request, response, "/WEB-INF/list.jsp");
 		} else {
 			System.out.println("잘못된 a값처리 로직");
 		}
